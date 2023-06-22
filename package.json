@@ -3,14 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "antd": "^5.6.2",
     "firebase": "^8",
     "mobx": "^6.9.0",
     "mobx-react": "^8.0.0",
-    "mobx-react-router": "^5.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router": "^6.13.0"
+    "react-dom": "^18.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -20,5 +19,17 @@
   },
   "devDependencies": {
     "react-scripts": "latest"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
