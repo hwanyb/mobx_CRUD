@@ -50,7 +50,7 @@ export const memberStore = observable({
         gender: "",
         name: "",
         signup_date: null,
-        added_at: Date.now()
+        added_at: Date.now(),
       })
       .then((docRef) => {
         dbService.collection("members").doc(docRef.id).update({
@@ -60,13 +60,11 @@ export const memberStore = observable({
       })
       .then(() => {
         this.member = dbService
-        .collection("members")
-        .doc(this.newMemberKey)
-        .get();
+          .collection("members")
+          .doc(this.newMemberKey)
+          .get();
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   },
 
 
@@ -74,4 +72,12 @@ export const memberStore = observable({
 
 
   /*************************데이터 update 로직****************************/
+  updateMember(data) {
+    dbService
+    .collection("members")
+    .doc(data.key)
+    .update({...data})
+    .then(() => console.log("정보 수정 완료"))
+    .catch((error) => console.log(error))
+  }
 });

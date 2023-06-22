@@ -17,6 +17,7 @@ const MemberTable = () => {
   const [form] = Form.useForm();
 
   const [editingKey, setEditingKey] = useState("");
+  const [data, setData] = useState({});
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -64,7 +65,7 @@ const MemberTable = () => {
             {editable ? (
               <>
                 <Tooltip title="수정 완료">
-                  <Button>
+                  <Button onClick={onDoneClick}>
                     <CheckOutlined />
                   </Button>
                 </Tooltip>
@@ -108,10 +109,10 @@ const MemberTable = () => {
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        setData: setData
       }),
     };
   });
-
 
 
     const onAddClick = () => {
@@ -135,7 +136,18 @@ const MemberTable = () => {
     });
     setEditingKey(record.key);
   }
-
+  function onDoneClick() {
+    console.log(data)
+    if(Object.keys(data).length === 0) {
+      setEditingKey("");
+    } else {
+      const result = window.confirm("정보를 수정하시겠습니까?")
+      if (result) {
+        memberStore.updateMember(data);
+        setEditingKey("");
+      } else return;
+    }
+  }
   function onDeleteClick(record) {
     const result = window.confirm(
       `${record.name} 회원의 정보를 삭제하시겠습니까?`
