@@ -159,12 +159,32 @@ const MemberTable = () => {
   }
 
   return useObserver(() => (
-    <>
-      <Button type="primary" onClick={onAddClick}>
+    <div
+      style={{
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "95vh",
+        margin: 0,
+        padding: 0,
+      }}
+    >
+      <Button
+        style={{
+          width: "fit-content",
+          marginBottom: "2rem",
+          padding: "0 3rem",
+        }}
+        type="primary"
+        onClick={onAddClick}
+        icon={<PlusOutlined />}
+      >
         회원 추가
       </Button>
 
-      <Form component={false} form={form}>
+      <Form component={false} form={form} style={{ width: "100%" }}>
         <Table
           columns={mergedCol}
           dataSource={memberStore.members}
@@ -175,7 +195,7 @@ const MemberTable = () => {
           }}
         />
       </Form>
-    </>
+    </div>
   ));
 };
 
