@@ -109,6 +109,7 @@ const MemberTable = () => {
         title: col.title,
         editing: isEditing(record),
         data: data,
+        editingKey: editingKey,
         setData: setData,
       }),
     };
@@ -132,9 +133,19 @@ const MemberTable = () => {
     } else {
       const result = window.confirm("정보를 수정하시겠습니까?");
       if (result) {
-        memberStore.updateMember(data);
-        setEditingKey("");
-        setData({});
+        if (
+          data.name === "" ||
+          data.age === null ||
+          data.signup_date === null ||
+          data.email === "" ||
+          data.gender === ""
+        ) {
+          window.alert("정보를 모두 입력해 주세요.");
+        } else {
+          memberStore.updateMember(data);
+          setEditingKey("");
+          setData({});
+        }
       } else return;
     }
   }
