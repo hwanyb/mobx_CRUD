@@ -25,7 +25,6 @@ const MemberTable = () => {
     memberStore.fetchMembers();
   }, []);
 
-
   const columns = [
     {
       title: "이름",
@@ -109,26 +108,17 @@ const MemberTable = () => {
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
-        setData: setData
+        data: data,
+        setData: setData,
       }),
     };
   });
 
-
-    const onAddClick = () => {
-    memberStore.addMember();
-   
-    // onEditClick({
-    //   age: null,
-    //   email: "",
-    //   gender: "",
-    //   name: "",
-    //   signup_date: null,
-    //   key: memberStore.newMemberKey,
-    // });
-    // console.log(memberStore.newMemberKey)
-    // console.log(memberStore.member)
-  }
+  const onAddClick = () => {
+    memberStore.addMember().then((key) => {
+      setEditingKey(key);
+    });
+  };
 
   function onEditClick(record) {
     form.setFieldsValue({
@@ -137,14 +127,14 @@ const MemberTable = () => {
     setEditingKey(record.key);
   }
   function onDoneClick() {
-    console.log(data)
-    if(Object.keys(data).length === 0) {
+    if (Object.keys(data).length === 0) {
       setEditingKey("");
     } else {
-      const result = window.confirm("정보를 수정하시겠습니까?")
+      const result = window.confirm("정보를 수정하시겠습니까?");
       if (result) {
         memberStore.updateMember(data);
         setEditingKey("");
+        setData({});
       } else return;
     }
   }
@@ -157,23 +147,24 @@ const MemberTable = () => {
     } else return;
   }
 
-
   return useObserver(() => (
-   <>
-      <Button type="primary" onClick={onAddClick}>회원 추가</Button>
+    <>
+      <Button type="primary" onClick={onAddClick}>
+        회원 추가
+      </Button>
 
-    <Form component={false} form={form}>
-      <Table
-        columns={mergedCol}
-        dataSource={memberStore.members}
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-      />
-    </Form>
-   </>
+      <Form component={false} form={form}>
+        <Table
+          columns={mergedCol}
+          dataSource={memberStore.members}
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+        />
+      </Form>
+    </>
   ));
 };
 

@@ -1,5 +1,5 @@
 import { Form, Input, InputNumber } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const EditableCell = ({
   editing,
@@ -9,57 +9,60 @@ const EditableCell = ({
   record,
   index,
   children,
+  data,
   setData,
   ...restProps
 }) => {
-  // const [newRecord, setNewRecord] = useState({...record});
+  useEffect(() => {
+    if (data !== undefined) {
+      setData({ ...record });
+    }
+  }, []);
+
   const inputNode =
     inputType === "number" ? (
-      <InputNumber
+      <Input
+        type="number"
         value={children}
-        onChange={(e) => onDataChange(e)}
-        id={dataIndex}
-        controls={false}
+        onChange={(e) => onDataChange(e, dataIndex)}
       />
     ) : (
-      <Input
-        value={children}
-        onChange={(e) => onDataChange(e)}
-        id={dataIndex}
-      />
+      <Input value={children} onChange={(e) => onDataChange(e, dataIndex)} />
     );
 
-  function onDataChange(e) {
-    const { id, value } = e.target
-    if(id === "name") {
+  function onDataChange(e, id) {
+    const {
+      target: { value },
+    } = e;
+    if (id === "name") {
       setData({
-        ...record,
-        name: value
-      })
-    } else if(id === "age") {
-      if(!isNaN(e.nativeEvent.data)){
+        ...data,
+        name: value,
+      });
+    } else if (id === "age") {
+      if (isNaN(e.nativeEvent.data) === false) {
         setData({
-          ...record,
-          age: value
-        })
+          ...data,
+          age: value,
+        });
       } else return;
-      
-    } else if(id === "gender") {
+    } else if (id === "gender") {
       setData({
-        ...record,
-        gender: value
-      })
-      
-    } else if(id === "signup_date") {
+        ...data,
+        gender: value,
+      });
+    } else if (id === "signup_date") {
       setData({
-        ...record,
-        signup_date: value
-      })
-      
-    }
-    console.log(isNaN(e.nativeEvent.data));
+        ...data,
+        signup_date: value,
+      });
+    } else if (id === "email") {
+      setData({
+        ...data,
+        email: value,
+      });
+    } else return;
   }
-
   return (
     <td {...restProps}>
       {editing ? (

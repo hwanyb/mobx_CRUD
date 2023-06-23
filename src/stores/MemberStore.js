@@ -1,30 +1,23 @@
-import { observable } from "mobx";
+import { autorun, observable } from "mobx";
 import { dbService } from "../firebase";
 
 export const memberStore = observable({
   members: [],
-  newMemberKey: "",
-  member: {},
 
   /*************************데이터 fetch 로직****************************/
   fetchMembers() {
-    dbService.collection("members")
-    .orderBy("added_at")
-    .onSnapshot((snapshot) => {
-      const docArr = snapshot.docs.map((doc) => ({ ...doc.data() }));
-      this.members = docArr;
-    });
+    dbService
+      .collection("members")
+      .orderBy("added_at")
+      .onSnapshot((snapshot) => {
+        const docArr = snapshot.docs.map((doc) => ({ ...doc.data() }));
+        this.members = docArr;
+      });
   },
-
 
   fetchMember(id) {
-    this.member = dbService
-      .collection("members")
-      .doc(id)
-      .get();
+    this.member = dbService.collection("members").doc(id).get();
   },
-
-
 
   /*************************데이터 delete 로직****************************/
   deleteMember(id) {
@@ -34,50 +27,38 @@ export const memberStore = observable({
       .delete()
       .then(() => {
         this.fetchMembers();
-        console.log("회원지워짐");
       });
   },
 
-
-
   /*************************데이터 add 로직****************************/
-  addMember() {
-    dbService
-      .collection("members")
-      .add({
+  // 데이터를 추가와 동시에 편집모드로 전환하기 위하여 빈 값들을 추가한 뒤 문서 id 값을 반환하도록 함
+  async addMember() {
+    try {
+      const docRef = await dbService.collection("members").add({
         age: null,
         email: "",
         gender: "",
         name: "",
         signup_date: null,
         added_at: Date.now(),
-      })
-      .then((docRef) => {
-        dbService.collection("members").doc(docRef.id).update({
-          key: docRef.id,
-        });
-        this.newMemberKey = docRef.id;
-      })
-      .then(() => {
-        this.member = dbService
-          .collection("members")
-          .doc(this.newMemberKey)
-          .get();
-      })
-      .catch((error) => console.log(error));
+      });
+
+      await docRef.update({
+        key: docRef.id,
+      });
+
+      return docRef.id;
+    } catch (error) {
+      throw error;
+    }
   },
-
-
-
-
 
   /*************************데이터 update 로직****************************/
   updateMember(data) {
     dbService
-    .collection("members")
-    .doc(data.key)
-    .update({...data})
-    .then(() => console.log("정보 수정 완료"))
-    .catch((error) => console.log(error))
-  }
+      .collection("members")
+      .doc(data.key)
+      .update({ ...data })
+      .catch((error) => console.log(error));
+  },
 });
