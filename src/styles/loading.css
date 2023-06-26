@@ -1,0 +1,66 @@
+@keyframes cloudAni {
+    from {
+        stroke-dashoffset: 1260
+    }
+
+    to {
+        stroke-dashoffset: 2520
+    }
+}
+
+@keyframes dotAni {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.loadingBase {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loadingWrapper {
+    position: relative;
+    width: fit-content;
+}
+
+.cloud {
+    overflow: visible;
+}
+
+.cloud path {
+    stroke-dasharray: 630;
+    animation: cloudAni 1.5s infinite ease-in-out;
+}
+
+.dots {
+    display: flex;
+    gap: 4px;
+    position: absolute;
+    bottom: 4px;
+    left: 18px;
+}
+
+.dots>svg {
+    fill: none;
+}
+
+.dots .dot1 {
+    animation: dotAni 0.5s infinite forwards;
+}
+
+.dots .dot2 {
+    animation: dotAni 1s infinite forwards;
+}
+
+.dots .dot3 {
+    animation: dotAni 1.5s infinite forwards;
+}

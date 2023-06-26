@@ -3,6 +3,7 @@ import { dbService } from "../firebase";
 
 export const memberStore = observable({
   members: [],
+  isLoading: true,
 
   /*************************데이터 fetch 로직****************************/
   fetchMembers() {
@@ -12,6 +13,9 @@ export const memberStore = observable({
       .onSnapshot((snapshot) => {
         const docArr = snapshot.docs.map((doc) => ({ ...doc.data() }));
         this.members = docArr;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
       });
   },
 
@@ -21,6 +25,7 @@ export const memberStore = observable({
 
   /*************************데이터 delete 로직****************************/
   deleteMember(id) {
+    this.isLoading = true;
     dbService
       .collection("members")
       .doc(id)
@@ -55,10 +60,15 @@ export const memberStore = observable({
 
   /*************************데이터 update 로직****************************/
   updateMember(data) {
+    this.isLoading = true;
+
     dbService
       .collection("members")
       .doc(data.key)
       .update({ ...data })
+      .then(() => {
+        this.fetchMembers();
+      })
       .catch((error) => console.log(error));
   },
 });

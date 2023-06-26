@@ -1,7 +1,6 @@
-import { inject, observer, useObserver } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import useStore from "../useStore";
-import { Button, Form, Table, Tooltip } from "antd";
+import { Button, ConfigProvider, Form, Spin, Table, Tooltip } from "antd";
 import EditableCell from "./EditableCell";
 
 import {
@@ -11,11 +10,14 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import EmptyTable from "./common/EmptyTable";
+import Loading from "./common/Loading";
 
-const MemberTable = () => {
-  const { memberStore } = useStore();
+const MemberTable = ({ memberStore }) => {
+  // const { memberStore } = useStore();
   const [form] = Form.useForm();
 
+  // const [isLoading, setIsLoading] = useState(true);
   const [editingKey, setEditingKey] = useState("");
   const [data, setData] = useState({});
 
@@ -158,8 +160,9 @@ const MemberTable = () => {
     } else return;
   }
 
-  return useObserver(() => (
-    <div
+  return (
+    <ConfigProvider
+      renderEmpty={() => <EmptyTable />}
       style={{
         textAlign: "center",
         display: "flex",
@@ -186,6 +189,13 @@ const MemberTable = () => {
 
       <Form component={false} form={form} style={{ width: "100%" }}>
         <Table
+          loading={
+            memberStore.isLoading
+              ? {
+                  indicator: <Loading />,
+                }
+              : false
+          }
           columns={mergedCol}
           dataSource={memberStore.members}
           components={{
@@ -195,8 +205,8 @@ const MemberTable = () => {
           }}
         />
       </Form>
-    </div>
-  ));
+    </ConfigProvider>
+  );
 };
 
-export default MemberTable;
+export default inject("memberStore")(observer(MemberTable));
