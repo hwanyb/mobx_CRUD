@@ -38,7 +38,7 @@
 
 .cloud path {
     stroke-dasharray: 630;
-    animation: cloudAni 1.5s infinite ease-in-out;
+    animation: cloudAni 1.2s infinite ease-in-out;
 }
 
 .dots {
@@ -51,6 +51,11 @@
 
 .dots>svg {
     fill: none;
+
+    
+}
+.dot circle {
+    opacity: 0;
 }
 
 .dots .dot1 {
@@ -58,9 +63,9 @@
 }
 
 .dots .dot2 {
-    animation: dotAni 1s infinite forwards;
+    animation: dotAni 0.5s 0.2s infinite forwards;
 }
 
 .dots .dot3 {
-    animation: dotAni 1.5s infinite forwards;
+    animation: dotAni 0.5s 0.4s infinite forwards;
 }

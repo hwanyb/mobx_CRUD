@@ -15,7 +15,7 @@ export const memberStore = observable({
         this.members = docArr;
         setTimeout(() => {
           this.isLoading = false;
-        }, 500);
+        }, 1000);
       });
   },
 

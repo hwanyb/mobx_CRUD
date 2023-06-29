@@ -14,10 +14,8 @@ import EmptyTable from "./common/EmptyTable";
 import Loading from "./common/Loading";
 
 const MemberTable = ({ memberStore }) => {
-  // const { memberStore } = useStore();
   const [form] = Form.useForm();
 
-  // const [isLoading, setIsLoading] = useState(true);
   const [editingKey, setEditingKey] = useState("");
   const [data, setData] = useState({});
 
@@ -161,50 +159,59 @@ const MemberTable = ({ memberStore }) => {
   }
 
   return (
-    <ConfigProvider
-      renderEmpty={() => <EmptyTable />}
-      style={{
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "95vh",
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      <Button
+    <ConfigProvider renderEmpty={() => <EmptyTable />}>
+      <div
         style={{
-          width: "fit-content",
-          marginBottom: "2rem",
-          padding: "0 3rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          margin: 0,
+          padding: "5rem",
+          width: "100vw",
+          height: "100vh",
+          boxSizing:"border-box"
         }}
-        type="primary"
-        onClick={onAddClick}
-        icon={<PlusOutlined />}
       >
-        회원 추가
-      </Button>
-
-      <Form component={false} form={form} style={{ width: "100%" }}>
-        <Table
-          loading={
-            memberStore.isLoading
-              ? {
-                  indicator: <Loading />,
-                }
-              : false
-          }
-          columns={mergedCol}
-          dataSource={memberStore.members}
-          components={{
-            body: {
-              cell: EditableCell,
-            },
+        <Button
+          style={{
+            width: "fit-content",
+            marginBottom: "2rem",
+            padding: "0 3rem",
           }}
-        />
-      </Form>
+          type="primary"
+          onClick={onAddClick}
+          icon={<PlusOutlined />}
+        >
+          회원 추가
+        </Button>
+
+        <Form
+          component={false}
+          form={form}
+        >
+          <Table
+            style={{
+              width: "100%",
+              height: "100%",
+              textAlign: "center"
+            }}
+            loading={
+              memberStore.isLoading
+                ? {
+                    indicator: <Loading />,
+                  }
+                : false
+            }
+            columns={mergedCol}
+            dataSource={memberStore.members}
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+          />
+        </Form>
+      </div>
     </ConfigProvider>
   );
 };
