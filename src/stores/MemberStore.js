@@ -1,9 +1,9 @@
-import { autorun, observable } from "mobx";
+import { observable } from "mobx";
 import { dbService } from "../firebase";
 
 export const memberStore = observable({
-  members: [],
-  isLoading: true,
+  members: [], // 회원들의 정보를 담고 있는 객체배열
+  isLoading: true, // 데이터 로딩 상태
 
   /*************************데이터 fetch 로직****************************/
   fetchMembers() {
@@ -14,7 +14,7 @@ export const memberStore = observable({
         const docArr = snapshot.docs.map((doc) => ({ ...doc.data() }));
         this.members = docArr;
         setTimeout(() => {
-          this.isLoading = false;
+          this.isLoading = false; // 데이터 fetch 1초 후 loading을 false로 바꿈
         }, 1000);
       });
   },

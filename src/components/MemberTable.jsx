@@ -169,7 +169,7 @@ const MemberTable = ({ memberStore }) => {
           padding: "5rem",
           width: "100vw",
           height: "100vh",
-          boxSizing:"border-box"
+          boxSizing: "border-box",
         }}
       >
         <Button
@@ -185,15 +185,12 @@ const MemberTable = ({ memberStore }) => {
           회원 추가
         </Button>
 
-        <Form
-          component={false}
-          form={form}
-        >
+        <Form component={false} form={form}>
           <Table
             style={{
               width: "100%",
               height: "100%",
-              textAlign: "center"
+              textAlign: "center",
             }}
             loading={
               memberStore.isLoading

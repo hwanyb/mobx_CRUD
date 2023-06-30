@@ -17,7 +17,7 @@ const EditableCell = ({
     if (data !== undefined) {
       setData({ ...record });
     }
-  }, []);
+  }, [editing]);
 
   const inputNode =
     inputType === "number" ? (
